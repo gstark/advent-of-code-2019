@@ -1,26 +1,32 @@
+# Read the opcodes
 opcodes = ARGF.read.split(",").map(&:to_i)
-# opcodes = [2, 4, 4, 5, 99, 0]
 
+# Set the codes we need
 opcodes[1] = 12
 opcodes[2] = 2
 
-position = 0
-location = 0
+# Start the instruction pointer at 0
+ip = 0
 
 loop do
-  opcode, op1, op2, target = opcodes[location..location + 4]
-
-  # p [opcode, op1, op2, target]
+  # Split the next four opcodes
+  opcode, op1, op2, target = opcodes[ip..ip + 4]
 
   case opcode
   when 1
+    # If the opcode is SUM, add the two values together
+    # and store them at the target location
     opcodes[target] = opcodes[op1] + opcodes[op2]
   when 2
+    # If the opcode is MULTIPLY, multiply the two values together
+    # and store them at the target location
     opcodes[target] = opcodes[op1] * opcodes[op2]
   when 99
     break
   end
-  location += 4
+
+  # Move the instruction pointer ahead
+  ip += 4
 end
 
 p opcodes
